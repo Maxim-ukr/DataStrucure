@@ -1,5 +1,6 @@
 #
 # ==============================================================================структури даних
+# ++++++++++++++++++++++++СПИСОК++++++++++++++++++++++++++++++++++
 
 # нотація O
 
@@ -177,7 +178,7 @@
 # data.pop_start()
 # print(data)
 
-# +++++++++++++++++++++++++++++++++STEKI
+# +++++++++++++++++++++++++++++++++СТЕКИ
 
 # class Shop:
 #     def __init__(self):
@@ -198,6 +199,7 @@
 #         queue = self.get_queue(idx)
 #         queue.push_end(name)
 
+# +++++++++++++++++++++++++++++++++++СТЕКИ+++++++++++++++++++++++++++++++++++++++++++++++
 
 # list1 = []
 # list1[2]  # O(N) -- кількість операцій співрадає(в середньому) з кількітю елементів у списку
@@ -416,7 +418,7 @@
 # reader.add_didg(dig)
 # dig = input("Enter the digit: ")
 # reader.add_didg(dig)
-#
+# print(reader.get_number())
 # reader.clear()
 #
 # dig = input("Enter the digit: ")
@@ -995,93 +997,93 @@
 #  name – ім’я
 #  priority – пріоритет
 
-from queue import PriorityQueue
-
-class Passenger:
-    def __init__(self, name, priority):
-        self.name = name
-        self.priority = priority
-
-
-class Zone:
-
-    # Методи:
-    #  add(passenger) – додає пацієнта в чергу з пріоритетом
-    #  serve_passenger() – обслуговуємо наступного пасажира
-    # та повертає його
-    def __init__(self, name):
-        self.name = name
-        self.passengers = PriorityQueue()
-
-    def add_passanger(self, passenger):
-        priority = passenger.priority
-
-        pair = (priority, passenger)
-
-        self.passengers.put(pair)
-
-    def serve_passenger(self):
-        priority, passenger = self.passengers.get()
-        return passenger
-
-
-
-class Airport:
-# Атрибути:
-#  zones – словник із зонами, ключем є назва зони
-#  passengers – список пасажирів, які успішно пройшли 3
-# зони
-# Методи:
-#  add(passenger) – додає пасажира в чергу на реєстрацію
-#  serve_registration() – обслуговує клієнта з черги
-# реєстрації та переводить на котроль безпеки
-#  serve_security_control() – обслуговує клієнта з черги
-# контролю безпеки та переводить на посадку
-#  serve_boarding() – обслуговує клієнта з черги посадки та
-# переводить в passengers
-#  show_statistics() – вивести кількість пасажирів у кожній
-# зоні та скільки успішно все пройшли
-    def __init__(self):
-        self.zones = {"Registration": Zone("Реєстрація"),
-                      "Control": Zone("Контроль"),
-                      "Board": Zone("Посадка")}
-        self.passengers = []
-
-    def add(self, passenger):
-        self.zones["Registration"].add_passanger(passenger)
-
-    def serve_registration(self):
-        pas = self.zones["Registration"].serve_passenger()
-        self.zones["Control"].add_passanger(pas)
-
-    def serve_security_control(self):
-        pas = self.zones["Control"].serve_passenger()
-        self.zones["Board"].add_passanger(pas)
-
-    def serve_boarding(self):
-        pas = self.zones["Board"].serve_passenger()
-        self.passengers.append(pas)
-
-    def show_statistics(self):
-        print(len(self.passengers))
-
-
-# Тестування
-airport = Airport()
-passengers = [
-    Passenger("Олег", 3),
-    Passenger("Анна", 1),
-    Passenger("Марія", 4),
-    Passenger("Сергій", 2)
-]
-
-for p in passengers:
-    airport.add(p)
-
-airport.serve_registration()
-airport.serve_registration()
-airport.serve_security_control()
-airport.serve_boarding()
-
-airport.show_statistics()
+# from queue import PriorityQueue
+#
+# class Passenger:
+#     def __init__(self, name, priority):
+#         self.name = name
+#         self.priority = priority
+#
+#
+# class Zone:
+#
+#     # Методи:
+#     #  add(passenger) – додає пацієнта в чергу з пріоритетом
+#     #  serve_passenger() – обслуговуємо наступного пасажира
+#     # та повертає його
+#     def __init__(self, name):
+#         self.name = name
+#         self.passengers = PriorityQueue()
+#
+#     def add_passanger(self, passenger):
+#         priority = passenger.priority
+#
+#         pair = (priority, passenger)
+#
+#         self.passengers.put(pair)
+#
+#     def serve_passenger(self):
+#         priority, passenger = self.passengers.get()
+#         return passenger
+#
+#
+#
+# class Airport:
+# # Атрибути:
+# #  zones – словник із зонами, ключем є назва зони
+# #  passengers – список пасажирів, які успішно пройшли 3
+# # зони
+# # Методи:
+# #  add(passenger) – додає пасажира в чергу на реєстрацію
+# #  serve_registration() – обслуговує клієнта з черги
+# # реєстрації та переводить на котроль безпеки
+# #  serve_security_control() – обслуговує клієнта з черги
+# # контролю безпеки та переводить на посадку
+# #  serve_boarding() – обслуговує клієнта з черги посадки та
+# # переводить в passengers
+# #  show_statistics() – вивести кількість пасажирів у кожній
+# # зоні та скільки успішно все пройшли
+#     def __init__(self):
+#         self.zones = {"Registration": Zone("Реєстрація"),
+#                       "Control": Zone("Контроль"),
+#                       "Board": Zone("Посадка")}
+#         self.passengers = []
+#
+#     def add(self, passenger):
+#         self.zones["Registration"].add_passanger(passenger)
+#
+#     def serve_registration(self):
+#         pas = self.zones["Registration"].serve_passenger()
+#         self.zones["Control"].add_passanger(pas)
+#
+#     def serve_security_control(self):
+#         pas = self.zones["Control"].serve_passenger()
+#         self.zones["Board"].add_passanger(pas)
+#
+#     def serve_boarding(self):
+#         pas = self.zones["Board"].serve_passenger()
+#         self.passengers.append(pas)
+#
+#     def show_statistics(self):
+#         print(len(self.passengers))
+#
+#
+# # Тестування
+# airport = Airport()
+# passengers = [
+#     Passenger("Олег", 3),
+#     Passenger("Анна", 1),
+#     Passenger("Марія", 4),
+#     Passenger("Сергій", 2)
+# ]
+#
+# for p in passengers:
+#     airport.add(p)
+#
+# airport.serve_registration()
+# airport.serve_registration()
+# airport.serve_security_control()
+# airport.serve_boarding()
+#
+# airport.show_statistics()
 
