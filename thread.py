@@ -179,17 +179,17 @@
 import threading
 import json
 
-lock = threading.Lock()
+lock = threading.Lock() # створення змінної, яка відповідає за функцію "ЗАМОК" в потоці.
 
 def even(path):
     global lock
 
-    lock.acquire()
+    lock.acquire() # відкриття замку в потоці
 
     with open(path, "r") as file:
         nums = json.load(file)
 
-    lock.release()
+    lock.release() #закриття замку в потоці
 
     new_nums = []
 
@@ -243,3 +243,25 @@ thr_odd.join()
 # слово для пошуку. Після чого запускається потік для
 # пошуку цього слова у файлі. Результат пошуку виведіть
 # на екран
+#
+# import threading
+#
+#
+# def func(user_path, user_word):
+#     try:
+#         with open(user_path, 'r') as file:
+#             words = file.read().lower()
+#     except Exception:
+#         print('Файлу не існує')
+#         return
+#
+#     word_count = words.count(user_word)
+#     print(f"Слово {user_word} зустрічається {word_count} разів")
+#
+#
+# user_path = input('Enter path: ')
+# user_word = input('Enter word for search: ').lower()
+#
+# thread_user = threading.Thread(target=func, args=(user_path, user_word))
+# thread_user.start()
+# thread_user.join()
