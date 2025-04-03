@@ -1,103 +1,50 @@
-# клієнт, надсилає запит на сервер
-# та отримує від нього відповідь
 
-# import socket
-#
-# client = socket.socket(socket.AF_INET, # спосіб передачі даних(Інтернет)
-#                        socket.SOCK_STREAM # протокол передачі(TCP)
-#                        )
-#
-# # підключаємося до сервера
-# client.connect(("127.0.0.1", 8080))
-#
-# # спілкування з сервером
-# while True:
-#     message = input('Ваше повідомлення: ')
-#
-#     # переводимо повідомлення в байти
-#     message_bytes = message.encode()
-#
-#     # надсилаємо повідомлення на сервер
-#     client.send(message_bytes)
-#
-#     # чи зупиняти з'єднання з сервером
-#     if message == '':
-#         break
-#
-#     # отримуємо відповідь
-#     response = client.recv(1024)
-#
-#     # перевести байти в str
-#     response_str = response.decode()
-#
-#     print(f'Сервер: {response_str}')
-#
-# client.close()
-
-
-
-#--------------------------------------------------
-# повідомлення не str
-
-# import socket
-# import json
-#
-# client = socket.socket(socket.AF_INET, # спосіб передачі даних(Інтернет)
-#                        socket.SOCK_STREAM # протокол передачі(TCP)
-#                        )
-#
-# # підключаємося до сервера
-# client.connect(("127.0.0.1", 8080))
-#
-# user_name = input("Ведіть ваше ім'я: ")
-#
-# # спілкування з сервером
-# while True:
-#     message = input('Ваше повідомлення: ')
-#
-#     # словник з даними на відправлення
-#     data = {'user_name': user_name,
-#             'message': message
-#             }
-#
-#     # кодуємо повідомлення через json
-#     data_json = json.dumps(data)
-#
-#     # переводимо повідомлення в байти
-#     message_bytes = data_json.encode()
-#
-#     # надсилаємо повідомлення на сервер
-#     client.send(message_bytes)
-#
-#     # чи зупиняти з'єднання з сервером
-#     if message == '':
-#         break
-#
-#     # отримуємо відповідь
-#     response = client.recv(1024)
-#
-#     # перевести байти в str
-#     response_str = response.decode()
-#
-#     print(f'Сервер: {response_str}')
-#
-# client.close()
-
-# __________________________________________________________________________
+# ____________________________TEST
 import socket
 import json
+import threading
+
+def receive_message(client):
+    while True:
+        receive = client.recv(1024).decode()
+        data = json.loads(receive)
+
+        print()
+        print(f"{data['name']}: {data['message']}")
+
+        if data['message'] == '':
+             break
+
 
 client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+client.connect(('127.0.0.1', 8080))
 
-client.connect(("127.0.0.1", 8080))
+thr = threading.Thread(target=receive_message, args=(client,))
+
+thr.start()
+
+name = input('Як вас звати? >>> ')
 
 while True:
-    city = input("Введіть місто: ")
-    city_byte = city.encode()
+    message = input(f'{name}: ')
+    # даний інпут фактично працює не коректно: він чекає на введення інформації і якщо приходить вхідне повідомлення, то
+    # курсор сбрасується на нову строку і виходить відірвано -
+    # ("Іван: Привіт
+    # Сергій:
+    # Іван: Як справи?
+    # Привіт (типу Сергій тільки відповів")
+    # Виправити цей баг в межах термінального спілкування без меню або іншого окремого виклику інпута з одночасним
+    # термінейтом потоку отримання інформації, я не зміг - способу не знайшов.
 
-    client.send(city_byte)
+    data = {'name': name,
+            'message': message}
+    code = json.dumps(data)
+    client.send(code.encode())
 
-    recive = client.recv(1024)
-    recive_decode = recive.decode()
+    if message == '':
+        break
 
-    print(recive_decode)
+thr.join()
+
+client.close()
+
