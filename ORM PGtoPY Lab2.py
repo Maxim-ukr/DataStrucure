@@ -233,6 +233,7 @@ def  surname_spec():
         print(row)
 
 
+
 while True:
     print("1 - вставити рядок в таблицю")
     print("2 - змінити рядок в таблиці")
